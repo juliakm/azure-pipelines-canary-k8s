@@ -1,9 +1,13 @@
-FROM python:3-slim
+FROM python:3.8-slim-buster
 
-WORKDIR /
+# copy app content
+COPY . /app
 
-RUN pip install flask prometheus_client
-COPY app.py /app.py
+#working directory is the current directory
+WORKDIR /app
 
-STOPSIGNAL SIGINT
-CMD ["python", "/app.py"]
+RUN pip3 install -r requirements.txt
+
+ENTRYPOINT ["python"]
+
+CMD ["app.py"]
