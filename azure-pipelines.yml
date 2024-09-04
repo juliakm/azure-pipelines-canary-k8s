@@ -1,0 +1,19 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  imageName: azure-pipelines-canary-k8s
+
+steps:
+- task: Docker@2
+  displayName: Build and push image
+  inputs:
+    containerRegistry: azure-pipelines-canary-acr
+    repository: $(imageName)
+    command: buildAndPush
+    Dockerfile: app/Dockerfile
+    tags: |
+      $(Build.BuildId)
