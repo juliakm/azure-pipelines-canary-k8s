@@ -20,7 +20,7 @@ spec:
       containers:
       - name: sampleapp
         # Replace <your-container-registry> with your actual container registry
-        image: <your-container-registry>.azurecr.io/sampleapp:latest
+        image: kubernetessept4.azurecr.io/sampleapp:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
