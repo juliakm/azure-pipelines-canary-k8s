@@ -51,27 +51,44 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: KubernetesManifest@0
-            displayName: Create imagePullSecret
+          - task: KubernetesManifest@1
             inputs:
-              action: createSecret
-              secretName: azure-pipelines-canary-k8s
-              dockerRegistryEndpoint: azure-pipelines-canary-acr
-          - task: KubernetesManifest@0
+              action: 'createSecret'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: 'azure-pipelines-canary-sc'
+              azureResourceGroup: 'kubernetes-testing'
+              kubernetesCluster: 'myAKSClustersept3'
+              secretType: 'dockerRegistry'
+              dockerRegistryEndpoint: 'azure-pipelines-canary-acr'
+          # - task: KubernetesManifest@0
+          #   displayName: Create imagePullSecret
+          #   inputs:
+          #     action: createSecret
+          #     secretName: azure-pipelines-canary-k8s
+          #     dockerRegistryEndpoint: azure-pipelines-canary-acr
+
+          - task: KubernetesManifest@1
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: 'deploy'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: 'azure-pipelines-canary-sc'
+              azureResourceGroup: 'kubernetes-testing'
+              kubernetesCluster: 'myAKSClustersept3'
               strategy: 'canary'
               percentage: '25'
               manifests: |
                 $(Pipeline.Workspace)/manifests/deployment.yml
                 $(Pipeline.Workspace)/manifests/service.yml
               containers: '$(containerRegistry)/$(imageRepository):$(tag)'
-              imagePullSecrets: azure-pipelines-canary-k8s
+              imagePullSecrets: 'azure-pipelines-canary-k8s'
 
-          - task: KubernetesManifest@0
+          - task: KubernetesManifest@1
             displayName: Deploy Forbio and ServiceMonitor
             inputs:
               action: 'deploy'
-              manifests: |
-                $(Pipeline.Workspace)/misc/*
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: 'azure-pipelines-canary-sc'
+              azureResourceGroup: 'kubernetes-testing'
+              kubernetesCluster: 'myAKSClustersept3'
+              manifests: '$(Pipeline.Workspace)/misc/*'
