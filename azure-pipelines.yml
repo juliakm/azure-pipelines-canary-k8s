@@ -41,7 +41,6 @@ stages:
         azureResourceGroup: 'kubernetes-testing'
         kubernetesCluster: 'myAKSClustersept3'
         namespace: 'default'
-        command: 'set'
         secretType: 'dockerRegistry'
         containerRegistryType: 'Azure Container Registry'
     - script: |
