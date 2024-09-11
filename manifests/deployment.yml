@@ -17,7 +17,7 @@ spec:
       containers:
       - name: sampleapp
         # Replace <your-container-registry> with your actual container registry
-        image: kubernetessept4.azurecr.io/sampleapp:latest
+        image: kubernetessept4.azurecr.io/azure-pipelines-canary-k8s:latest
         ports:
         - containerPort: 8000
         - containerPort: 8080
