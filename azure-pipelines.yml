@@ -58,12 +58,6 @@ stages:
               kubernetesServiceConnection: 'azure-pipelines-canary-k8s'
               secretType: 'dockerRegistry'
               dockerRegistryEndpoint: 'azure-pipelines-canary-acr'
-          # - task: KubernetesManifest@0
-          #   displayName: Create imagePullSecret
-          #   inputs:
-          #     action: createSecret
-          #     secretName: azure-pipelines-canary-k8s
-          #     dockerRegistryEndpoint: azure-pipelines-canary-acr
 
           # - task: KubernetesManifest@1
           #   displayName: Deploy to Kubernetes cluster
