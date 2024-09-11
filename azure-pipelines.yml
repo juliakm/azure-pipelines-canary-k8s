@@ -54,9 +54,12 @@ stages:
           - task: KubernetesManifest@1
             inputs:
               action: 'createSecret'
-              connectionType: 'kubernetesServiceConnection'
-              kubernetesServiceConnection: 'azure-pipelines-canary-k8s'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: 'azure-pipelines-canary-sc'
+              azureResourceGroup: 'kubernetes-testing'
+              kubernetesCluster: 'myAKSClustersept3'
               secretType: 'dockerRegistry'
+              secretName: 'my-acr-secret'
               dockerRegistryEndpoint: 'azure-pipelines-canary-acr'
 
           # - task: KubernetesManifest@1
