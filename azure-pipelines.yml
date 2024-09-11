@@ -77,7 +77,7 @@ stages:
               containers: '$(containerRegistry)/$(imageRepository):$(tag)'
               imagePullSecrets: 'azure-pipelines-canary-k8s'
           - task: KubernetesManifest@1
-            displayName: Deploy Forbio and ServiceMonitor
+            displayName: Deploy Forbio to Kubernetes cluster
             inputs:
               action: 'deploy'
               connectionType: 'azureResourceManager'
