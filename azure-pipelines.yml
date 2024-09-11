@@ -29,7 +29,16 @@ stages:
         Dockerfile: app/Dockerfile
         tags: |
           $(tag)
-
+    - task: HelmInstaller@1
+      displayName: Install Helm
+      inputs:
+        helmVersionToInstall: 'latest'
+    - script: |
+        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+        helm repo update
+        helm install prometheus-operator prometheus-community/kube-prometheus-stack
+      displayName: Install Prometheus Operator
+          
     - publish: manifests
       artifact: manifests
 
