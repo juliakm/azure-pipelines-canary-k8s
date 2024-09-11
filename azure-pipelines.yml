@@ -33,6 +33,17 @@ stages:
       displayName: Install Helm
       inputs:
         helmVersionToInstall: 'latest'
+    - task: Kubernetes@1
+      displayName: Set up Kubernetes context
+      inputs:
+        connectionType: 'Azure Resource Manager'
+        azureSubscriptionEndpoint: 'azure-pipelines-canary-sc'
+        azureResourceGroup: 'kubernetes-testing'
+        kubernetesCluster: 'myAKSClustersept3'
+        namespace: 'default'
+        command: 'set'
+        secretType: 'dockerRegistry'
+        containerRegistryType: 'Azure Container Registry'
     - script: |
         helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
         helm repo update
