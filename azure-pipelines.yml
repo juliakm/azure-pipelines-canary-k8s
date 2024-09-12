@@ -111,7 +111,7 @@ stages:
               connectionType: 'azureResourceManager'
               azureSubscriptionConnection: 'azure-pipelines-canary-sc'
               azureResourceGroup: 'kubernetes-testing'
-              kubernetesCluster: 'myAKSClustersept3'
+              kubernetesCluster: 'aksclustersept12'
               strategy: 'canary'
               manifests: '$(Pipeline.Workspace)/manifests/*'
               containers: '$(containerRegistry)/$(imageRepository):$(tag)'
