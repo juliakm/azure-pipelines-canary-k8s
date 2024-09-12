@@ -116,3 +116,28 @@ stages:
               manifests: '$(Pipeline.Workspace)/manifests/*'
               containers: '$(containerRegistry)/$(imageRepository):$(tag)'
               imagePullSecrets: '$(imagePullSecret)'
+- stage: RejectCanary
+  displayName: Reject canary
+  dependsOn: PromoteRejectCanary
+  condition: failed()
+
+  jobs:
+  - deployment: RejectCanary
+    displayName: Reject Canary
+    pool: 
+      vmImage: ubuntu-latest
+    environment: 'akscanary'
+    strategy:
+      runOnce:
+        deploy:
+          steps:            
+          - task: KubernetesManifest@1
+            displayName: reject canary
+            inputs:
+              action: 'reject'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: 'azure-pipelines-canary-sc'
+              azureResourceGroup: 'kubernetes-testing'
+              kubernetesCluster: 'aksclustersept12'
+              strategy: 'canary'
+              manifests: '$(Pipeline.Workspace)/manifests/*'
