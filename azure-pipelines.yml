@@ -144,12 +144,14 @@ stages:
         deploy:
           steps:            
           - task: KubernetesManifest@1
-            displayName: reject canary
+            displayName: Reject canary deployment
             inputs:
               action: 'reject'
               connectionType: 'azureResourceManager'
               azureSubscriptionConnection: 'azure-pipelines-canary-sc'
               azureResourceGroup: 'kubernetes-testing'
               kubernetesCluster: 'aksclustersept12'
-              strategy: 'canary'
+              namespace: 'default'
               manifests: '$(Pipeline.Workspace)/manifests/*'
+              containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+              imagePullSecrets: 'my-acr-secret'
