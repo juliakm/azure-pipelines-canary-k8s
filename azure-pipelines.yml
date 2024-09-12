@@ -115,7 +115,7 @@ stages:
               strategy: 'canary'
               manifests: '$(Pipeline.Workspace)/manifests/*'
               containers: '$(containerRegistry)/$(imageRepository):$(tag)'
-              imagePullSecrets: '$(imagePullSecret)'
+              imagePullSecrets: 'my-acr-secret'
 - stage: RejectCanary
   displayName: Reject canary
   dependsOn: PromoteRejectCanary
