@@ -88,3 +88,31 @@ stages:
               azureResourceGroup: 'kubernetes-testing'
               kubernetesCluster: 'myAKSClustersept3'
               manifests: '$(Pipeline.Workspace)/misc/*'
+
+- stage: PromoteRejectCanary
+  displayName: Promote or Reject canary
+  dependsOn: DeployCanary
+  condition: succeeded()
+    
+  jobs:
+  - deployment: PromoteCanary
+    displayName: Promote Canary
+    pool: 
+      vmImage: ubuntu-latest
+    environment: 'akspromote.canarydemo'
+    strategy:
+      runOnce:
+        deploy:
+          steps:            
+          - task: KubernetesManifest@1
+            displayName: promote canary
+            inputs:
+              action: 'promote'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: 'azure-pipelines-canary-sc'
+              azureResourceGroup: 'kubernetes-testing'
+              kubernetesCluster: 'myAKSClustersept3'
+              strategy: 'canary'
+              manifests: '$(Pipeline.Workspace)/manifests/*'
+              containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+              imagePullSecrets: '$(imagePullSecret)'
