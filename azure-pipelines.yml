@@ -99,7 +99,7 @@ stages:
     displayName: Promote Canary
     pool: 
       vmImage: ubuntu-latest
-    environment: 'akspromote.canarydemo'
+    environment: 'akspromote'
     strategy:
       runOnce:
         deploy:
